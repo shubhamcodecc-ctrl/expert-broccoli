@@ -1,0 +1,29 @@
+{
+  "name": "youtube-video-recommender",
+  "version": "1.0.0",
+  "description": "Chrome extension for personalized YouTube video recommendations",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run extension:build:dev\"",
+    "extension:install": "cd extension && npm install && cd ..",
+    "backend:install": "cd backend && npm install && cd ..",
+    "ml:install": "pip install -r ml/requirements.txt",
+    "extension:build": "cd extension && npm run build && cd ..",
+    "extension:build:dev": "cd extension && npm run build:dev && cd ..",
+    "backend:dev": "cd backend && npm run dev && cd ..",
+    "backend:build": "cd backend && npm run build && cd ..",
+    "test": "npm run extension:test && npm run backend:test",
+    "extension:test": "cd extension && npm run test && cd ..",
+    "backend:test": "cd backend && npm run test && cd ..",
+    "lint": "npm run extension:lint && npm run backend:lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
+  },
+  "workspaces": [
+    "extension",
+    "backend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "prettier": "^3.0.0"
+  }
+}
