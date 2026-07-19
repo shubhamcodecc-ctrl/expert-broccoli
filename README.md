@@ -1,175 +1,139 @@
-# YouTube Video Recommender Extension
+# YouTube Video Recommendation Extension
 
-A Chrome extension that recommends YouTube videos based on user viewing history and preferences, surfacing the most reliable videos tailored to individual user behavior.
+A smart Chrome extension that recommends the most reliable YouTube videos based on user's past viewing preferences and engagement patterns.
 
 ## Features
 
-✨ **Core Capabilities:**
-- 🎥 Personalized video recommendations based on watch history
-- 📊 Reliability scoring system (engagement, channel credibility, likes)
-- 👤 User preference learning and adaptation
-- 🔍 Smart video discovery suggestions
-- 🎯 Real-time recommendations on YouTube pages
-- 💾 Persistent user profiles and preference tracking
-- 🔐 Privacy-first design with local and optional cloud sync
+- **Smart Recommendations**: AI-powered video recommendations based on:
+  - Watch history
+  - Video engagement metrics (likes, views, channel credibility)
+  - User preferences and viewing patterns
+  - Video quality indicators
+
+- **Reliability Score**: Proprietary algorithm that rates videos based on:
+  - Channel authority and subscriber count
+  - Video engagement ratio (likes/views)
+  - Comment sentiment analysis
+  - Viewer retention metrics
+
+- **User Dashboard**: Track recommendation history and personalized analytics
+
+- **Privacy-First**: All data processing happens locally with optional cloud sync
 
 ## Tech Stack
 
-- **Frontend:** React 18, TypeScript, Tailwind CSS
-- **Extension API:** Chrome Extension Manifest V3
-- **Backend:** Node.js + Express, MongoDB
-- **ML:** TensorFlow.js for recommendation algorithms
-- **Build:** Webpack, Vite
-- **Testing:** Jest, React Testing Library
+### Frontend
+- **React 18** - UI components
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Redux Toolkit** - State management
+
+### Backend
+- **Node.js + Express** - API server
+- **Python + FastAPI** - ML model serving
+- **MongoDB** - User data & preferences
+- **Redis** - Caching & sessions
+
+### ML/AI
+- **TensorFlow/PyTorch** - Recommendation model
+- **Scikit-learn** - Feature engineering
+- **NLTK** - Sentiment analysis
+
+### DevOps
+- **Docker** - Containerization
+- **Docker Compose** - Local development
+- **GitHub Actions** - CI/CD pipeline
+- **AWS/GCP** - Cloud deployment
 
 ## Project Structure
 
 ```
 expert-broccoli/
-├── extension/              # Chrome Extension source
-│   ├── public/
-│   │   ├── manifest.json   # Extension manifest (MV3)
-│   │   ├── icons/          # Extension icons (16, 48, 128px)
-│   │   └── popup.html
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── background/     # Service worker
-│   │   ├── content/        # Content script for YouTube
-│   │   ├── popup/          # Extension popup UI
-│   │   ├── options/        # Settings page
-│   │   └── utils/          # Utilities and helpers
-│   └── package.json
-│
-├── backend/                # Node.js/Express API
-│   ├── src/
-│   │   ├── controllers/    # API controllers
-│   │   ├── models/         # MongoDB schemas
-│   │   ├── routes/         # API endpoints
-│   │   ├── middleware/     # Auth, validation
-│   │   ├── services/       # Business logic
-│   │   └── config/         # Configuration
-│   ├── tests/              # API tests
-│   └── package.json
-│
-├── ml/                     # ML recommendation engine
-│   ├── models/             # Pre-trained models
-│   ├── scripts/            # Training scripts
-│   └── requirements.txt
-│
-├── docs/                   # Documentation
-│   ├── ARCHITECTURE.md
-│   ├── API.md
-│   ├── SETUP.md
-│   └── CONTRIBUTING.md
-│
-├── docker-compose.yml      # Development environment
-├── .env.example
-└── .gitignore
+├── extension/              # Chrome extension (content script, popup, background)
+├── frontend/              # React dashboard UI
+├── backend/               # Express API server
+├── ml-service/            # Python FastAPI ML model
+├── shared/                # Shared types and utilities
+├── docker-compose.yml     # Local development environment
+├── Dockerfile             # Multi-stage builds
+└── .github/workflows/     # CI/CD automation
 ```
 
-## Getting Started
+## Quick Start
 
 ### Prerequisites
-- Node.js >= 16
-- npm or yarn
-- MongoDB (local or Atlas)
-- Chrome browser
+- Node.js 18+
+- Python 3.9+
+- Docker & Docker Compose
+- MongoDB (via Docker)
+- Redis (via Docker)
 
-### Installation
+### Development Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/shubhamcodecc-ctrl/expert-broccoli.git
-   cd expert-broccoli
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   cd extension && npm install
-   cd ../backend && npm install
-   cd ..
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your MongoDB URI and API keys
-   ```
-
-4. **Start backend server**
-   ```bash
-   npm run backend:dev
-   ```
-
-5. **Build extension**
-   ```bash
-   npm run extension:build:dev
-   ```
-
-6. **Load extension in Chrome**
-   - Go to `chrome://extensions`
-   - Enable "Developer mode"
-   - Click "Load unpacked"
-   - Select `extension/dist` folder
-
-## Development
-
-### Watch mode (auto-rebuild)
 ```bash
-npm run dev  # Runs both backend and extension in watch mode
+# Clone the repository
+git clone https://github.com/shubhamcodecc-ctrl/expert-broccoli.git
+cd expert-broccoli
+
+# Install dependencies
+npm run setup
+
+# Start all services (Docker Compose)
+docker-compose up -d
+
+# Run migrations and seed data
+npm run db:migrate
+npm run db:seed
+
+# Start development servers
+npm run dev
 ```
 
-### Run tests
+Services will be available at:
+- Extension: Load from `extension/` in Chrome
+- Frontend Dashboard: http://localhost:3000
+- Backend API: http://localhost:5000
+- ML API: http://localhost:8000
+- MongoDB: localhost:27017
+- Redis: localhost:6379
+
+## Building for Production
+
 ```bash
+# Build extension
+npm run build:extension
+
+# Build docker images
+docker build -t youtube-recommendation-api .
+
+# Push to registry
+docker push your-registry/youtube-recommendation-api
+```
+
+## Testing
+
+```bash
+# Run all tests
 npm run test
+
+# Frontend tests
+npm run test:frontend
+
+# Backend tests
+npm run test:backend
+
+# ML model tests
+npm run test:ml
 ```
 
-### Build for production
-```bash
-npm run build
-```
+## API Documentation
 
-## API Endpoints
-
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/users/preferences` - Get user preferences
-- `PUT /api/users/preferences` - Update preferences
-- `GET /api/videos/recommendations` - Get personalized recommendations
-- `POST /api/videos/watch-history` - Log watched video
-- `GET /api/videos/reliability-score` - Get video reliability score
-
-## How the Recommendation Algorithm Works
-
-1. **Data Collection:** Tracks user watch history, engagement (likes, dislikes, comments)
-2. **Feature Extraction:** Analyzes video metadata, channel info, user patterns
-3. **Scoring:** Combines multiple factors:
-   - User preference similarity
-   - Video reliability (engagement rate, likes/dislikes)
-   - Channel credibility
-   - Recency and popularity
-4. **Ranking:** Returns top-N personalized recommendations
-
-## Browser Support
-
-- Chrome 90+
-- Edge 90+ (Chromium-based)
-
-## License
-
-MIT License - see LICENSE file for details
+Swagger docs available at: http://localhost:5000/api/docs
 
 ## Contributing
 
-See CONTRIBUTING.md for development guidelines
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## Roadmap
+## License
 
-- [ ] Firefox extension support
-- [ ] Advanced ML model integration
-- [ ] Cloud sync with privacy controls
-- [ ] Video clustering by topic
-- [ ] Collaborative filtering
-- [ ] Dark mode UI
-- [ ] Analytics dashboard
+MIT
